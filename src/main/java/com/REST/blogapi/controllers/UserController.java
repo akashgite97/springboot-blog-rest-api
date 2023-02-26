@@ -27,6 +27,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/healthCheck")
+    public String test() {
+        return "user apis working!";
+    }
+
     @PostMapping("/create")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
 
@@ -64,10 +69,5 @@ public class UserController {
 
         this.userService.deleteUser(userId);
 
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "working";
     }
 }
