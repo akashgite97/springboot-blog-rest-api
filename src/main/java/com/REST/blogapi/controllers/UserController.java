@@ -2,6 +2,16 @@ package com.REST.blogapi.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import javax.validation.Valid;
+
+import javax.validation.Valid;
+
+import javax.validation.Valid;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -33,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
 
         UserDto user = this.userService.createUser(userDto);
 
@@ -57,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable int userId) {
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable int userId) {
 
         UserDto user = this.userService.updateUser(userDto, userId);
 
