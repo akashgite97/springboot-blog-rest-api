@@ -11,9 +11,10 @@ import com.REST.blogapi.entities.Category;
 import com.REST.blogapi.exceptions.ResourceNotFoundException;
 import com.REST.blogapi.payloads.CategoryDto;
 import com.REST.blogapi.repositories.CategoryRepo;
+import com.REST.blogapi.services.CategoryService;
 
 @Service
-public class CategoryServiceImpl {
+public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepo categoryRepo;
@@ -31,7 +32,7 @@ public class CategoryServiceImpl {
     }
 
 
-    public CategoryDto updateCategory(CategoryDto categoryDto, int categoryId){
+    public CategoryDto updateCategory(CategoryDto categoryDto, Integer categoryId){
         
         Category category = this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","CategoryId",categoryId));
         category.setCategoryTitle(categoryDto.getCategoryTitle());
@@ -43,7 +44,7 @@ public class CategoryServiceImpl {
     }
 
     
-    public CategoryDto getCategoryById(int categoryId){
+    public CategoryDto getCategoryById(Integer categoryId){
 
         Category category = this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category", "CategoryId", categoryId));
         
@@ -55,11 +56,11 @@ public class CategoryServiceImpl {
 
         List<Category> categories = this.categoryRepo.findAll();
 
-        return categories.stream().map((category)->this.modelMapper.map(categories, CategoryDto.class)).collect(Collectors.toList());
+        return categories.stream().map(category->this.modelMapper.map(categories, CategoryDto.class)).collect(Collectors.toList());
     
     }
 
-    public void deleteCategoey(int categoryId){
+    public void deleteCategory(Integer categoryId){
         
         Category category = this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category", "CategoryId", categoryId));
         
