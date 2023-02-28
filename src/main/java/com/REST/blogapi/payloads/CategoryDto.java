@@ -1,9 +1,18 @@
 package com.REST.blogapi.payloads;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class CategoryDto {
 
     private int categoryId;
+    
+    @NotEmpty
+    @Size(min=4, message="Category title must be min of 4 characters")
     private String categoryTitle;
+
+        
+    @NotEmpty
     private String categoryDescription;
 
     public int getCategoryId() {
