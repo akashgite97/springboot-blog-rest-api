@@ -1,6 +1,8 @@
 package com.REST.blogapi.services.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +74,35 @@ public class PostServiceImpl implements PostService {
         this.postRepo.delete(post);
     }
 
-    // public List<PostDto> getPostsByUser(User user){
+     public List<PostDto> getAllPost(){
 
+        List<Post> posts = this.postRepo.findAll();
+
+        List<PostDto> postDtos = posts.stream().map(post->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
         
-    // }
+        return postDtos;
+        
+     }
+
+     public List<PostDto> getPostsByUser(Integer userId){
+
+        User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User", "userId", userId));
+
+        List<Post> posts = this.postRepo.findByUser(user);
+
+        List<PostDto> postDtos = posts.stream().map(post->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+
+        return postDtos;
+        }
+
+     public List<PostDto> getPostsByCategory(Integer categoryId){
+        
+         Category category = this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category", "categoryId", categoryId));
+    
+         List<Post> posts = this.postRepo.findByCategory(category);
+
+         List<PostDto> postDtos = posts.stream().map(post->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+
+         return postDtos;
+        }
 }
