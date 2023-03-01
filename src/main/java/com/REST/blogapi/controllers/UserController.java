@@ -4,14 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import javax.validation.Valid;
-
-import javax.validation.Valid;
-
-import javax.validation.Valid;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
@@ -25,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.UserDto;
 import com.REST.blogapi.services.UserService;
 import com.REST.blogapi.services.impl.UserServiceImpl;
@@ -75,9 +68,11 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{userId}")
-    public void deleteuser(@PathVariable int userId) {
+    public ApiResponse deleteuser(@PathVariable int userId) {
 
         this.userService.deleteUser(userId);
+
+        return new ApiResponse("User successfullt deleted",true);
 
     }
 }

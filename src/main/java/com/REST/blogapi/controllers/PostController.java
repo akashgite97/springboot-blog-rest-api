@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.PostDto;
 import com.REST.blogapi.services.PostService;
 
@@ -59,10 +60,11 @@ public class PostController {
     }
 
     @DeleteMapping("/delete/{postId}")
-    public void deletePost(@PathVariable int postId) {
+    public ApiResponse deletePost(@PathVariable int postId) {
 
         this.postService.deletePost(postId);
 
+        return new ApiResponse("Post successfully deleted",true);
     }
 
     @GetMapping("/user/{userId}")

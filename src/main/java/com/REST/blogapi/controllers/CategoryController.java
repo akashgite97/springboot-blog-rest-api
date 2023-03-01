@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.CategoryDto;
 import com.REST.blogapi.services.CategoryService;
 import com.REST.blogapi.services.impl.CategoryServiceImpl;
@@ -62,9 +63,11 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{categoryId}")
-    public void deleteuser(@PathVariable int categoryId) {
+    public ApiResponse deleteuser(@PathVariable int categoryId) {
 
         this.categoryService.deleteCategory(categoryId);
+
+        return new ApiResponse("Category successfully deleted", true);
 
     }
 }
