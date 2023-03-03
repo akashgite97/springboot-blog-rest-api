@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.PostDto;
+import com.REST.blogapi.payloads.PostResponse;
 import com.REST.blogapi.services.PostService;
 
 @RestController
@@ -39,19 +40,19 @@ public class PostController {
     @GetMapping("/get/{postId}")
     public ResponseEntity<PostDto> createUser(@PathVariable int postId) {
 
-        PostDto user = this.postService.getPostById(postId);
+        PostDto post = this.postService.getPostById(postId);
 
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     @GetMapping("/get/all")
-    public ResponseEntity<List<PostDto>> getAllUsers(
-        @RequestParam(value = "pageNumber",defaultValue = "1", required = false) Integer pageNumber,
-        @RequestParam(value = "pageSize",defaultValue = "5", required = false) Integer pageSize) {
+    public ResponseEntity<PostResponse> getAllUsers(
+        @RequestParam(value = "pageNumber",defaultValue = "0", required = false) Integer pageNumber,
+        @RequestParam(value = "pageSize",defaultValue = "10", required = false) Integer pageSize) {
 
-        List<PostDto> users = this.postService.getAllPost(pageNumber, pageSize);
+        PostResponse allPosts = this.postService.getAllPost(pageNumber, pageSize);
 
-        return new ResponseEntity<>(users, HttpStatus.CREATED);
+        return new ResponseEntity<PostResponse>(allPosts, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{postId}")
