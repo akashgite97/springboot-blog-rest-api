@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.REST.blogapi.constants.MessageConstants;
 import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.UserDto;
 import com.REST.blogapi.services.UserService;
@@ -72,7 +73,7 @@ public class UserController {
 
         this.userService.deleteUser(userId);
 
-        return new ApiResponse("User successfullt deleted",true);
+        return new ApiResponse(MessageConstants.USER_DELETE_SUCCESS,true);
 
     }
 }
