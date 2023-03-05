@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.REST.blogapi.constants.AppConstants;
 import com.REST.blogapi.constants.MessageConstants;
@@ -23,6 +24,7 @@ import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.PostDto;
 import com.REST.blogapi.payloads.PostResponse;
 import com.REST.blogapi.services.PostService;
+import com.REST.blogapi.utils.FileUploadHelper;
 
 @RestController
 @RequestMapping("/api/post")
@@ -30,6 +32,9 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
     
     @PostMapping("/user/{userId}/category/{categoryId}")
     public ResponseEntity<PostDto> createCategory(@Valid @RequestBody PostDto postDto, @PathVariable int userId, @PathVariable int categoryId) {
@@ -97,5 +102,25 @@ public class PostController {
         List<PostDto> searchResults = this.postService.searchPost("%"+keywords+"%");
 
         return new ResponseEntity<>(searchResults, HttpStatus.OK);
+    }
+
+    @PostMapping("/image/upload")
+    public ResponseEntity<String> uploadPostImage(@RequestParam("file") MultipartFile file){
+
+        if(file.isEmpty()){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Reuqest must contain file");
+        }
+
+        if(!file.getContentType().equals("image/jpeg")){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Only jpeg content type are allowed");
+        }
+
+        boolean f = fileUploadHelper.uploadFile(file);
+        
+        if(f){
+            return ResponseEntity.ok("File uploaded successfully");
+        }
+
+       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong ! Please try again later");
     }
 }
