@@ -26,9 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.REST.blogapi.constants.AppConstants;
 import com.REST.blogapi.constants.MessageConstants;
-import com.REST.blogapi.payloads.ApiResponse;
-import com.REST.blogapi.payloads.PostDto;
-import com.REST.blogapi.payloads.PostResponse;
+import com.REST.blogapi.payloads.dto.PostDto;
+import com.REST.blogapi.payloads.response.ApiResponse;
+import com.REST.blogapi.payloads.response.PostResponse;
 import com.REST.blogapi.services.FileService;
 import com.REST.blogapi.services.PostService;
 
@@ -125,20 +125,6 @@ public class PostController {
         postDto.setImageName(fileName);
 
         PostDto updatedPost = this.postService.updatePost(postDto, postId);
-
-        // if(file.isEmpty()){
-        // return new ResponseEntity<>(new FileResponse(f, "Reuqest must contain file",
-        // false));
-        // }
-
-        // if(!file.getContentType().equals("image/jpeg")){
-        // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Only
-        // jpeg content type are allowed");
-        // }
-
-        // if(f!=""){
-        // return ResponseEntity.ok("File uploaded successfully");
-        // }
 
         return new ResponseEntity<PostDto>(updatedPost, HttpStatus.OK);
     }

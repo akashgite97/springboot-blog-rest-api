@@ -2,7 +2,7 @@ package com.REST.blogapi.services;
 
 import java.util.List;
 
-import com.REST.blogapi.payloads.UserDto;
+import com.REST.blogapi.payloads.dto.UserDto;
 
 public interface UserService {
     

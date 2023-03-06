@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.REST.blogapi.constants.MessageConstants;
-import com.REST.blogapi.payloads.ApiResponse;
-import com.REST.blogapi.payloads.UserDto;
+import com.REST.blogapi.payloads.dto.UserDto;
+import com.REST.blogapi.payloads.response.ApiResponse;
 import com.REST.blogapi.services.UserService;
 import com.REST.blogapi.services.impl.UserServiceImpl;
 

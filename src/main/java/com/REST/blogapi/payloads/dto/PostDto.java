@@ -1,4 +1,4 @@
-package com.REST.blogapi.payloads;
+package com.REST.blogapi.payloads.dto;
 
 import java.util.Date;
 

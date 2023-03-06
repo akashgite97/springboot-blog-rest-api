@@ -1,6 +1,8 @@
-package com.REST.blogapi.payloads;
+package com.REST.blogapi.payloads.response;
 
 import java.util.List;
+
+import com.REST.blogapi.payloads.dto.PostDto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

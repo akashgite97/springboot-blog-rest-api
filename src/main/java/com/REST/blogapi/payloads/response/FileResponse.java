@@ -1,4 +1,4 @@
-package com.REST.blogapi.payloads;
+package com.REST.blogapi.payloads.response;
 
 public class FileResponse {
     

@@ -2,7 +2,7 @@ package com.REST.blogapi.services;
 
 import java.util.List;
 
-import com.REST.blogapi.payloads.CategoryDto;
+import com.REST.blogapi.payloads.dto.CategoryDto;
 
 public interface CategoryService {
 

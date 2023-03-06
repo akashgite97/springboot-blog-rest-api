@@ -2,8 +2,8 @@ package com.REST.blogapi.services;
 
 import java.util.List;
 
-import com.REST.blogapi.payloads.PostDto;
-import com.REST.blogapi.payloads.PostResponse;
+import com.REST.blogapi.payloads.dto.PostDto;
+import com.REST.blogapi.payloads.response.PostResponse;
 
 
 public interface PostService {

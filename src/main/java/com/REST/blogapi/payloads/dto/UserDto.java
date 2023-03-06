@@ -1,4 +1,4 @@
-package com.REST.blogapi.payloads;
+package com.REST.blogapi.payloads.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;

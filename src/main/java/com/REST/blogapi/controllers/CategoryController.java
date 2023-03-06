@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.REST.blogapi.constants.MessageConstants;
-import com.REST.blogapi.payloads.ApiResponse;
-import com.REST.blogapi.payloads.CategoryDto;
+import com.REST.blogapi.payloads.dto.CategoryDto;
+import com.REST.blogapi.payloads.response.ApiResponse;
 import com.REST.blogapi.services.CategoryService;
 import com.REST.blogapi.services.impl.CategoryServiceImpl;
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.REST.blogapi.entities.Category;
 import com.REST.blogapi.exceptions.ResourceNotFoundException;
-import com.REST.blogapi.payloads.CategoryDto;
+import com.REST.blogapi.payloads.dto.CategoryDto;
 import com.REST.blogapi.repositories.CategoryRepo;
 import com.REST.blogapi.services.CategoryService;
 

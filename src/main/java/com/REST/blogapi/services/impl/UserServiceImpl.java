@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.REST.blogapi.entities.User;
 import com.REST.blogapi.exceptions.ResourceNotFoundException;
-import com.REST.blogapi.payloads.UserDto;
+import com.REST.blogapi.payloads.dto.UserDto;
 import com.REST.blogapi.repositories.UserRepo;
 import com.REST.blogapi.services.UserService;
 
