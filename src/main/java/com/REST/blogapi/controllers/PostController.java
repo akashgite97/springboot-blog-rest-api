@@ -1,12 +1,18 @@
 package com.REST.blogapi.controllers;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +29,8 @@ import com.REST.blogapi.constants.MessageConstants;
 import com.REST.blogapi.payloads.ApiResponse;
 import com.REST.blogapi.payloads.PostDto;
 import com.REST.blogapi.payloads.PostResponse;
+import com.REST.blogapi.services.FileService;
 import com.REST.blogapi.services.PostService;
-import com.REST.blogapi.utils.FileUploadHelper;
 
 @RestController
 @RequestMapping("/api/post")
@@ -34,12 +40,16 @@ public class PostController {
     private PostService postService;
 
     @Autowired
-    private FileUploadHelper fileUploadHelper;
-    
-    @PostMapping("/user/{userId}/category/{categoryId}")
-    public ResponseEntity<PostDto> createCategory(@Valid @RequestBody PostDto postDto, @PathVariable int userId, @PathVariable int categoryId) {
+    private FileService fileService;
 
-        PostDto post = this.postService.createPost(postDto,userId,categoryId);
+    @Value("${project.image}")
+    private String path;
+
+    @PostMapping("/user/{userId}/category/{categoryId}")
+    public ResponseEntity<PostDto> createCategory(@Valid @RequestBody PostDto postDto, @PathVariable int userId,
+            @PathVariable int categoryId) {
+
+        PostDto post = this.postService.createPost(postDto, userId, categoryId);
 
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
@@ -54,12 +64,12 @@ public class PostController {
 
     @GetMapping("/get/all")
     public ResponseEntity<PostResponse> getAllUsers(
-        @RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
-        @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-        @RequestParam(value = "sortBy",defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
-        @RequestParam(value = "sortDir",defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
 
-        PostResponse allPosts = this.postService.getAllPost(pageNumber, pageSize, sortBy,sortDir);
+        PostResponse allPosts = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortDir);
 
         return new ResponseEntity<PostResponse>(allPosts, HttpStatus.CREATED);
     }
@@ -77,7 +87,7 @@ public class PostController {
 
         this.postService.deletePost(postId);
 
-        return new ApiResponse(MessageConstants.POST_DELETE_SUCCESS,true);
+        return new ApiResponse(MessageConstants.POST_DELETE_SUCCESS, true);
     }
 
     @GetMapping("/user/{userId}")
@@ -97,30 +107,47 @@ public class PostController {
     }
 
     @GetMapping("/search/{keywords}")
-    public ResponseEntity<List<PostDto>> searchByTitle(@PathVariable String keywords){
+    public ResponseEntity<List<PostDto>> searchByTitle(@PathVariable String keywords) {
 
-        List<PostDto> searchResults = this.postService.searchPost("%"+keywords+"%");
+        List<PostDto> searchResults = this.postService.searchPost("%" + keywords + "%");
 
         return new ResponseEntity<>(searchResults, HttpStatus.OK);
     }
 
-    @PostMapping("/image/upload")
-    public ResponseEntity<String> uploadPostImage(@RequestParam("file") MultipartFile file){
+    @PostMapping("/image/upload/{postId}")
+    public ResponseEntity<PostDto> uploadPostImage(@RequestParam("file") MultipartFile file,
+            @PathVariable Integer postId) throws IOException {
 
-        if(file.isEmpty()){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Reuqest must contain file");
-        }
+        PostDto postDto = this.postService.getPostById(postId);
 
-        if(!file.getContentType().equals("image/jpeg")){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Only jpeg content type are allowed");
-        }
+        String fileName = this.fileService.uploadFile(path, file);
 
-        boolean f = fileUploadHelper.uploadFile(file);
-        
-        if(f){
-            return ResponseEntity.ok("File uploaded successfully");
-        }
+        postDto.setImageName(fileName);
 
-       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong ! Please try again later");
+        PostDto updatedPost = this.postService.updatePost(postDto, postId);
+
+        // if(file.isEmpty()){
+        // return new ResponseEntity<>(new FileResponse(f, "Reuqest must contain file",
+        // false));
+        // }
+
+        // if(!file.getContentType().equals("image/jpeg")){
+        // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Only
+        // jpeg content type are allowed");
+        // }
+
+        // if(f!=""){
+        // return ResponseEntity.ok("File uploaded successfully");
+        // }
+
+        return new ResponseEntity<PostDto>(updatedPost, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/post/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadImage(@PathVariable String imageName, HttpServletResponse response) throws IOException {
+
+        InputStream resource = this.fileService.getResource(path, imageName);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
     }
 }
