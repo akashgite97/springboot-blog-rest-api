@@ -34,11 +34,8 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = this.modelMapper.map(commentDto, Comment.class);
 
-        System.out.println("incoming comment"+comment);
-        System.out.println("before comment set"+post);
         comment.setPost(post);
-        System.out.println("after cokmment set"+post);
-
+     
         Comment newComment = this.commentRepo.save(comment);
 
         return this.modelMapper.map(newComment, CommentDto.class);
