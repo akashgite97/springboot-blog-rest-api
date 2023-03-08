@@ -13,8 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Entity
+@Getter
+@Setter
 public class Post {
     
     @Id
@@ -95,6 +100,15 @@ public class Post {
         this.user = user;
     }
 
+    // public Set<Comment> getComments() {
+    //     return comments;
+    // }
+
+    // public void setComments(Set<Comment> comments) {
+    //     this.comments = comments;
+    // }
+
+    
     
 
 }
