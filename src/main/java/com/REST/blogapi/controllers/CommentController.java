@@ -18,25 +18,24 @@ import com.REST.blogapi.services.CommentService;
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
-    
+
     @Autowired
     private CommentService commentService;
 
-@PostMapping("/post/{postId}/comments")
-public ResponseEntity<CommentDto> createCommnent(@RequestBody CommentDto comment, @PathVariable Integer postId){
+    @PostMapping("/post/{postId}/comments")
+    public ResponseEntity<CommentDto> createCommnent(@RequestBody CommentDto comment, @PathVariable Integer postId) {
 
-    System.out.println("comment controller"+comment);
-    CommentDto newComment = this.commentService.createComment(comment, postId);
+        CommentDto newComment = this.commentService.createComment(comment, postId);
 
-    return new ResponseEntity<>(newComment, HttpStatus.CREATED);
-}
+        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
+    }
 
-@DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/delete/{commentId}")
     public ApiResponse deleteuser(@PathVariable int commentId) {
 
         this.commentService.deleteComment(commentId);
 
-        return new ApiResponse(MessageConstants.CATEGORY_DELETE_SUCCESS, true);
+        return new ApiResponse(MessageConstants.COMMENT_DELETE_SUCCESS, true);
 
     }
 
